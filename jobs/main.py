@@ -16,6 +16,7 @@ table = """
 CREATE TABLE IF NOT EXISTS APPINFO (
     first_name TEXT
     last_name TEXT
+    app_title TEXT
     status BOOLEAN
     company TEXT
     email TEXT
@@ -26,6 +27,7 @@ connect = sqlite3.connect("jobs.db")
 cursor = connect.cursor()
 cursor.execute(table)
 connect.commit()
+
 
 userinput = input(
 """ 
@@ -40,6 +42,9 @@ Options:
 
 Enter your value here: 
 """)
+
+sql = "INSERT INTO APPINFO (first_name, last_name, status, company, email) VALUES (?,?,?,?,?)"
+connect.execute(sql, (userinput,))
 
 # ADD JOB
 if (userinput == '1'):
