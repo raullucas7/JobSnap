@@ -3,15 +3,11 @@ import sqlite3
 
 print("Welcome to JobSnap, the easy to-use job tracker for applications!")
 
-# job info dictionary
-job = {
-    "email" : "N/A",
-    "company" : "N/A",
-    "application title" : "N/A",
-    "role" : "N/A",
-    "status" : "true / false"
-}
+# connection to database -----------------------------------------------------
+connect = sqlite3.connect("jobs.db")
+cursor = connect.cursor()
 
+# table -----------------------------------------------------
 table = """
 CREATE TABLE IF NOT EXISTS APPINFO (
     first_name TEXT
@@ -23,12 +19,11 @@ CREATE TABLE IF NOT EXISTS APPINFO (
 )
 """
 
-connect = sqlite3.connect("jobs.db")
-cursor = connect.cursor()
 cursor.execute(table)
 connect.commit()
 
 
+# Menu Display -----------------------------------------------------
 userinput = input(
 """ 
 What would you like to do?
@@ -43,8 +38,8 @@ Options:
 Enter your value here: 
 """)
 
-sql = "INSERT INTO APPINFO (first_name, last_name, status, company, email) VALUES (?,?,?,?,?)"
-connect.execute(sql, (userinput,))
+
+# Choice Handling -----------------------------------------------------
 
 # ADD JOB
 if (userinput == '1'):
@@ -59,21 +54,12 @@ if (userinput == '1'):
     statusinput = input("Have you applied or not (yes/no): ")
     companyinput = input("Enter company applied to: ")
     emailinput = input("Enter your email: ")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    # INSERT VALUES INTO DATABASE
+    queryinsert = "INSERT INTO APPINFO (first_name, last_name, status, company, email) VALUES (?,?,?,?,?)"
+    connect.commit()
+    
+    print("Job entry success!")
     
 elif (userinput == '2'):
     print("You are now viewing a j*b")
@@ -88,3 +74,4 @@ else:
     print("Exiting")
     exit()
     
+
