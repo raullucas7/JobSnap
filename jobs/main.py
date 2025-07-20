@@ -65,7 +65,7 @@ if (userinput == '1'):
     print("Job entry success!")
 
 
-
+# VIEW JOB
 elif (userinput == '2'):
     
     print("You are now viewing a j*b")
@@ -74,7 +74,7 @@ elif (userinput == '2'):
     for row in rows:
         print(row)
 
-
+# EDIT JOB
 elif (userinput == '3'):
     print("You are now editing a j*b")
     
@@ -82,9 +82,11 @@ elif (userinput == '3'):
     queryedit = "UPDATE APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
     
 """
+# DROP JOB
 elif (userinput == '4'):
     print("You are now deleting a j*b")
-    
+
+# EXIT PROGRAM
 else:
     print("Exiting")
     exit()
