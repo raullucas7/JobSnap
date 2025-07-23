@@ -11,6 +11,7 @@ cursor = connect.cursor()
 # table -----------------------------------------------------
 table = """
 CREATE TABLE IF NOT EXISTS APPINFO (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     first_name TEXT,
     last_name TEXT,
     app_title TEXT,
@@ -48,7 +49,7 @@ if (userinput == '1'):
     
     addfnameinput = input("Enter your first name: ")
     addlnameinput = input("Enter your last name: ")
-    applicationtitle = input("Enter application name: ")
+    applicationtitle = input("Enter application name (title with role): ")
     statusinput = input("Have you applied or not (yes/no): ")
     if (statusinput.lower() == 'yes'):
         status_value = 1
@@ -74,21 +75,55 @@ elif (userinput == '2'):
     for row in rows:
         print(row)
 
-# EDIT JOB
-elif (userinput == '3'):
-    print("You are now editing a j*b")
-    
-    
-    queryedit = "UPDATE APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
-    
-"""
-# DROP JOB
+
+
+
+
+# DELETE JOB
 elif (userinput == '4'):
     print("You are now deleting a j*b")
+    
+    cursor.execute("SELECT * FROM APPINFO")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+    
+    deleteentryid = input("Select ID number to delete: ")
+    cursor.execute("DELETE FROM APPINFO WHERE id = ?", (deleteentryid))
+    connect.commit()
+    
+    print("Job deletion success!")
 
 # EXIT PROGRAM
 else:
     print("Exiting")
     exit()
 
+
+"""
+# EDIT JOB
+elif (userinput == '3'):
+    print("You are now editing a j*b")
+    
+    
+    # Display jobs for viewer to pick from
+    cursor.execute("SELECT * FROM APPINFO")
+    rows = cursor.fetchall()
+    for row in rows:
+        print(row)
+    
+    print("Which j*b would you like to edit?")
+    queryedit = "UPDATE APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
+    
+    
+    #if skip is said:
+    #    skip current question
+    #else:
+    #    continue
+    
+    
+    cursor.execute(queryinsert, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
+    connect.commit()
+    
+    print("Job entry success!")
 """
