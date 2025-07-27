@@ -94,13 +94,7 @@ elif (userinput == '4'):
     
     print("Job deletion success!")
 
-# EXIT PROGRAM
-else:
-    print("Exiting")
-    exit()
 
-
-"""
 # EDIT JOB
 elif (userinput == '3'):
     print("You are now editing a j*b")
@@ -112,6 +106,14 @@ elif (userinput == '3'):
     for row in rows:
         print(row)
     
+    editrequest = input("What would you like to edit? ")
+    
+    if (editrequest == "ID" or 'id'):
+        
+        
+    
+    # ask if any more details want to be edited after ID -> continue for all variables if so
+    
     print("Which j*b would you like to edit?")
     queryedit = "UPDATE APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
     
@@ -122,8 +124,14 @@ elif (userinput == '3'):
     #    continue
     
     
-    cursor.execute(queryinsert, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
+    cursor.execute(queryedit, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
     connect.commit()
     
     print("Job entry success!")
-"""
+
+
+# EXIT PROGRAM
+else:
+    print("Exiting")
+    exit()
+
