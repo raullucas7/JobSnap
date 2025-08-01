@@ -51,10 +51,12 @@ if (userinput == '1'):
     addlnameinput = input("Enter your last name: ")
     applicationtitle = input("Enter application name (title with role): ")
     statusinput = input("Have you applied or not (yes/no): ")
+    
     if (statusinput.lower() == 'yes'):
         status_value = 1
     else:
         status_value = 2
+    
     companyinput = input("Enter company applied to: ")
     emailinput = input("Enter your email: ")
     
@@ -74,9 +76,6 @@ elif (userinput == '2'):
     rows = cursor.fetchall()
     for row in rows:
         print(row)
-
-
-
 
 
 # DELETE JOB
@@ -99,24 +98,32 @@ elif (userinput == '4'):
 elif (userinput == '3'):
     print("You are now editing a j*b")
     
+    while True:
+        # Display jobs for viewer to pick from
+        cursor.execute("SELECT * FROM APPINFO")
+        rows = cursor.fetchall()
+        for row in rows:
+            print(row)
+            
+        
+        # feature: select the job via ID to edit
+        job_id = input("Enter the ID of the j*b you would like to edit: ")
+        
+        # feature: select the field you would like to edit
+        changes = input("Enter your desired change: ")
+        
+        queryedit = "UPDATE APPINFO SET = ? WHERE id = ?"
     
-    # Display jobs for viewer to pick from
-    cursor.execute("SELECT * FROM APPINFO")
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
+        # if (editrequest == "ID" or 'id'):
+        
+        break
     
-    editrequest = input("What would you like to edit? ")
-    
-    if (editrequest == "ID" or 'id'):
         
         
     
     # ask if any more details want to be edited after ID -> continue for all variables if so
     
-    print("Which j*b would you like to edit?")
-    queryedit = "UPDATE APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
-    
+        
     
     #if skip is said:
     #    skip current question
