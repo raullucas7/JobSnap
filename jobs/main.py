@@ -106,35 +106,31 @@ elif (userinput == '3'):
             print(row)
             
         
-        # feature: select the job via ID to edit
-        job_id = input("Enter the ID of the j*b you would like to edit: ")
+        # check field validity
+        field_name = input("Enter the field you would like to edit: ")
+        validity_fields = ["first_name", "last_name", "app_title", "status", "company", "email"]
         
-        # feature: select the field you would like to edit
-        changes = input("Enter your desired change: ")
+        if field_name not in validity_fields:
+            print("Invalid field bro")
+        else:
+            job_id = input("Enter the ID of the j*b you would like to edit: ")
+            new_change = input(f"Enter your changes for {field_name}: ")
+            
+            queryedit = f"UPDATE APPINFO SET {field_name} = ? WHERE id = ?"
+            cursor.execute(queryedit, (new_change, job_id))
+            connect.commit()
+    
+            print("Job entry success!")
         
-        queryedit = "UPDATE APPINFO SET = ? WHERE id = ?"
-    
-        # if (editrequest == "ID" or 'id'):
         
-        break
+        # ask if any more details want to be edited after ID -> continue for all variables if so
     
+        #if skip is said:
+        #    skip current question
+        #else:
+        #    continue
         
-        
-    
-    # ask if any more details want to be edited after ID -> continue for all variables if so
-    
-        
-    
-    #if skip is said:
-    #    skip current question
-    #else:
-    #    continue
-    
-    
-    cursor.execute(queryedit, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
-    connect.commit()
-    
-    print("Job entry success!")
+        break    
 
 
 # EXIT PROGRAM
