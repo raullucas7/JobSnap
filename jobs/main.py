@@ -1,5 +1,6 @@
 import random
 import sqlite3
+import timer
 
 
 print("Welcome to JobSnap, the easy to-use job tracker for applications!")
@@ -24,12 +25,12 @@ CREATE TABLE IF NOT EXISTS APPINFO (
 cursor.execute(table)
 connect.commit()
 
-
+while True:
 # Menu Display -----------------------------------------------------
-userinput = input(
+    userinput = input(
 """ 
 What would you like to do?
-              
+                
 Options: 
     1. Add Job
     2. View Job
@@ -44,97 +45,105 @@ Enter your value here:
 # Choice Handling -----------------------------------------------------
 
 # ADD JOB
-if (userinput == '1'):
-    print("You are now adding a j*b")
-    
-    addfnameinput = input("Enter your first name: ")
-    addlnameinput = input("Enter your last name: ")
-    applicationtitle = input("Enter application name (title with role): ")
-    statusinput = input("Have you applied or not (yes/no): ")
-    
-    if (statusinput.lower() == 'yes'):
-        status_value = 1
-    else:
-        status_value = 2
-    
-    companyinput = input("Enter company applied to: ")
-    emailinput = input("Enter your email: ")
-    
-    # INSERT VALUES INTO DATABASE
-    queryinsert = "INSERT INTO APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
-    cursor.execute(queryinsert, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
-    connect.commit()
-    
-    print("Job entry success!")
+    if (userinput == '1'):
+        print("You are now adding a j*b")
+        
+        addfnameinput = input("Enter your first name: ")
+        addlnameinput = input("Enter your last name: ")
+        applicationtitle = input("Enter application name (title with role): ")
+        statusinput = input("Have you applied or not (yes/no): ")
+        
+        if (statusinput.lower() == 'yes'):
+            status_value = 1
+        else:
+            status_value = 2
+        
+        companyinput = input("Enter company applied to: ")
+        emailinput = input("Enter your email: ")
+        
+        # INSERT VALUES INTO DATABASE
+        queryinsert = "INSERT INTO APPINFO (first_name, last_name, app_title, status, company, email) VALUES (?,?,?,?,?,?)"
+        cursor.execute(queryinsert, (addfnameinput, addlnameinput, applicationtitle, status_value, companyinput, emailinput))
+        connect.commit()
+        
+        print("Job entry success!")
 
 
-# VIEW JOB
-elif (userinput == '2'):
-    
-    print("You are now viewing a j*b")
-    cursor.execute("SELECT * FROM APPINFO")
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
-
-
-# DELETE JOB
-elif (userinput == '4'):
-    print("You are now deleting a j*b")
-    
-    cursor.execute("SELECT * FROM APPINFO")
-    rows = cursor.fetchall()
-    for row in rows:
-        print(row)
-    
-    deleteentryid = input("Select ID number to delete: ")
-    cursor.execute("DELETE FROM APPINFO WHERE id = ?", (deleteentryid))
-    connect.commit()
-    
-    print("Job deletion success!")
-
-
-# EDIT JOB
-elif (userinput == '3'):
-    print("You are now editing a j*b")
-    
-    while True:
-        # Display jobs for viewer to pick from
+    # VIEW JOB
+    elif (userinput == '2'):
+        
+        print("You are now viewing a j*b")
         cursor.execute("SELECT * FROM APPINFO")
         rows = cursor.fetchall()
         for row in rows:
             print(row)
-            
-        
-        # check field validity
-        field_name = input("Enter the field you would like to edit: ")
-        validity_fields = ["first_name", "last_name", "app_title", "status", "company", "email"]
-        
-        if field_name not in validity_fields:
-            print("Invalid field bro")
-        else:
-            job_id = input("Enter the ID of the j*b you would like to edit: ")
-            new_change = input(f"Enter your changes for {field_name}: ")
-            
-            queryedit = f"UPDATE APPINFO SET {field_name} = ? WHERE id = ?"
-            cursor.execute(queryedit, (new_change, job_id))
-            connect.commit()
-    
-            print("Job entry success!")
-        
-        
-        # ask if any more details want to be edited after ID -> continue for all variables if so
-    
-        #if skip is said:
-        #    skip current question
-        #else:
-        #    continue
-        
-        break    
 
 
-# EXIT PROGRAM
-else:
-    print("Exiting")
-    exit()
+    # DELETE JOB
+    elif (userinput == '4'):
+        print("You are now deleting a j*b")
+        
+        # display jobs
+        cursor.execute("SELECT * FROM APPINFO")
+        rows = cursor.fetchall()
+        
+        # exit program if no jobs found in DB
+        if (len(rows) == 0):
+            print("No jobs found, program now exiting")
+            connect.close()
+            exit()
+        
+        for row in rows:
+            print(row)
+
+        deleteentryid = input("Select ID number to delete: ")
+        cursor.execute("DELETE FROM APPINFO WHERE id = ?", (deleteentryid))
+        connect.commit()
+        
+        print("Job deletion success!")
+
+
+    # EDIT JOB
+    elif (userinput == '3'):
+        print("You are now editing a j*b")
+        
+        while True:
+            # Display jobs for viewer to pick from
+            cursor.execute("SELECT * FROM APPINFO")
+            rows = cursor.fetchall()
+            for row in rows:
+                print(row)
+                
+            
+            # check field validity
+            field_name = input("Enter the field you would like to edit: ")
+            validity_fields = ["first_name", "last_name", "app_title", "status", "company", "email"]
+            
+            if (field_name not in validity_fields):
+                print("Invalid field bro")
+            else:
+                job_id = input("Enter the ID of the j*b you would like to edit: ")
+                new_change = input(f"Enter your changes for {field_name}: ")
+                
+                queryedit = f"UPDATE APPINFO SET {field_name} = ? WHERE id = ?"
+                cursor.execute(queryedit, (new_change, job_id))
+                connect.commit()
+        
+                print("Job entry success!")
+            
+            
+            # ask if any more details want to be edited after ID -> continue for all variables if so
+        
+            #if skip is said:
+            #    skip current question
+            #else:
+            #    continue
+            
+            break    
+
+
+    # EXIT PROGRAM
+    else:
+        print("Exiting")
+        exit()
 
